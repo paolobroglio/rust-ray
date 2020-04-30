@@ -1,0 +1,9 @@
+[package]
+name = "rust-ray"
+version = "0.1.0"
+authors = ["Paolo Broglio <53121467+paolobroglio@users.noreply.github.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
