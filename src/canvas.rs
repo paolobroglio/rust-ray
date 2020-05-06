@@ -7,8 +7,8 @@ use std::io::Write;
 use crate::color::Color;
 
 pub struct Canvas {
-    width: usize,
-    height: usize,
+    pub width: usize,
+    pub height: usize,
     pixels: Vec<Vec<Color>>,
 }
 
@@ -30,7 +30,10 @@ impl Canvas {
     }
 
     pub fn write_pixel(&mut self, x: usize, y: usize, color: Color) {
-        self.pixels[x][y] = color;
+        println!("Updating pixel at x={} y={}", x, y);
+        if x < self.width && y < self.height {
+            self.pixels[y][x] = color;
+        }
     }
 
     pub fn to_ppm(&self) -> Result<String, io::Error> {

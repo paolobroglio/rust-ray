@@ -5,7 +5,7 @@ use crate::tuple::Tuple;
 
 #[derive(Copy, Clone)]
 pub struct Projectile {
-    position: Tuple,
+    pub position: Tuple,
     velocity: Tuple,
 }
 
@@ -32,8 +32,14 @@ impl Environment {
     }
     pub fn tick(&self, projectile: &Projectile) -> Projectile {
         Projectile {
-            position: projectile.position + self.wind,
+            position: projectile.position + projectile.velocity,
             velocity: projectile.velocity + self.gravity + self.wind,
         }
+    }
+}
+
+impl Display for Environment {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "(gravity={}, wind={})", self.gravity, self.wind)
     }
 }
