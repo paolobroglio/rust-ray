@@ -7,7 +7,7 @@ mod tuple;
 mod environment;
 mod canvas;
 mod color;
-
+mod matrix;
 
 fn main() {
     println!("Hello, world!");
