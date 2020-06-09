@@ -6,7 +6,7 @@ use crate::tuple::Tuple;
 
 #[derive(Debug)]
 pub struct Matrix {
-    vector2: Vec<Vec<f32>>,
+    pub vector2: Vec<Vec<f32>>,
     square: bool,
     m: usize,
     n: usize,
@@ -29,7 +29,24 @@ impl Matrix {
             n,
         }
     }
-    pub fn mul_by_tuple(&self, tuple: &Vec<f32>) -> Vec<f32> {
+    pub fn new_identity(size: usize) -> Matrix {
+        let mut vector: Vec<Vec<f32>> = Vec::new();
+        for i in 0..size {
+            let mut row: Vec<f32> = Vec::new();
+            for j in 0..size {
+                row.push(0.0);
+            }
+            row[i] = 1.0;
+            vector.push(row);
+        }
+        Matrix {
+            vector2: vector,
+            m: size,
+            n: size,
+            square: true,
+        }
+    }
+    pub fn mul_by_tuple(&self, tuple: &Vec<f32>) -> Tuple {
         let mut vector: Vec<f32> = Vec::new();
         for i in 0..self.n {
             let mut sum = 0.0_f32;
@@ -38,7 +55,7 @@ impl Matrix {
             }
             vector.push(sum);
         }
-        vector
+        Tuple::from_vector(&vector)
     }
     pub fn transpose(&self) -> Matrix {
         let mut transposed: Vec<Vec<f32>> = Vec::new();
@@ -230,7 +247,7 @@ mod test {
                                             2.0, 8.0, 6.0, 4.0, 1.0, 0.0, 0.0, 0.0, 1.0]);
         let tuple = vec![1.0, 2.0, 3.0, 1.0];
         let result = matrix.mul_by_tuple(&tuple);
-        assert_eq!(result, vec![18.0, 24.0, 33.0, 1.0]);
+        assert_eq!(result, Tuple { x: 18.0, y: 24.0, z: 33.0, t: 1.0 });
     }
 
     #[test]
@@ -345,6 +362,15 @@ mod test {
             -6.0, 7.0, 7.0, -9.0
         ]);
         let res = matrix4x4 * snd_matrix4x4.clone();
-        println!("{}", res * snd_matrix4x4.invert());
+        // TODO: add assert
+    }
+
+    #[test]
+    fn test_identity() {
+        let res = Matrix::new_identity(4);
+        assert_eq!(res.at(0, 0), 1.0);
+        assert_eq!(res.at(1, 1), 1.0);
+        assert_eq!(res.at(2, 2), 1.0);
+        assert_eq!(res.at(3, 3), 1.0);
     }
 }

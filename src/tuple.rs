@@ -7,7 +7,7 @@ pub struct Tuple {
     pub x: f32,
     pub y: f32,
     pub z: f32,
-    t: f32,
+    pub t: f32,
 }
 
 impl Tuple {
@@ -16,6 +16,17 @@ impl Tuple {
     }
     pub fn new_vector(x: f32, y: f32, z: f32) -> Tuple {
         Tuple { x, y, z, t: 0.0 }
+    }
+    pub fn to_vector(&self) -> Vec<f32> {
+        vec![self.x, self.y, self.z, self.t]
+    }
+    pub fn from_vector(vector: &Vec<f32>) -> Tuple {
+        Tuple {
+            x: vector[0],
+            y: vector[1],
+            z: vector[2],
+            t: vector[3],
+        }
     }
     pub fn negate(&self) -> Tuple {
         Tuple {
