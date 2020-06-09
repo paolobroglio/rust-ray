@@ -58,31 +58,3 @@ pub fn shear(x_x: f32, x_y: f32, y_x: f32, y_y: f32, z_x: f32, z_y: f32) -> Matr
     identity.vector2[2][1] = z_y;
     identity
 }
-
-
-#[cfg(test)]
-mod tests {
-    use crate::tuple::Tuple;
-
-    use super::*;
-
-    #[test]
-    fn test_seq_transformations() {
-        let point = Tuple::new_point(1.0, 0.0, 1.0);
-        let rotation = rotate_x(PI / 2.0);
-        let scale = scale(5.0, 5.0, 5.0);
-        let translation = translate(10.0, 5.0, 7.0);
-        let rotated = rotation.mul_by_tuple(&point.to_vector());
-        assert_eq!(rotated.x, 1.0);
-        assert_eq!(rotated.y, -1.0);
-        assert_eq!(rotated.z, 0.0);
-        let scaled = scale.mul_by_tuple(&rotated.to_vector());
-        assert_eq!(scaled.x, 5.0);
-        assert_eq!(scaled.y, -5.0);
-        assert_eq!(scaled.z, 0.0);
-        let translated = translation.mul_by_tuple(&scaled.to_vector());
-        assert_eq!(translated.x, 15.0);
-        assert_eq!(translated.y, 0.0);
-        assert_eq!(translated.z, 7.0);
-    }
-}
