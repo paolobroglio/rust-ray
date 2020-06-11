@@ -31,7 +31,7 @@ impl Vec3 {
     pub fn length(&self) -> f32 {
         self.length_square().sqrt()
     }
-    fn length_square(&self) -> f32 {
+    pub fn length_square(&self) -> f32 {
         self.x() * self.x() + self.y() * self.y() + self.z() * self.z()
     }
     pub fn dot(&self, other: Vec3) -> f32 {
