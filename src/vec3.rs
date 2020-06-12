@@ -16,9 +16,6 @@ impl Vec3 {
             e: [e1, e2, e3]
         }
     }
-    pub fn new_zeroes() -> Vec3 {
-        Vec3::new(0.0, 0.0, 0.0)
-    }
     pub fn x(&self) -> f32 {
         self.e[0]
     }

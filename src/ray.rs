@@ -13,12 +13,6 @@ impl Ray {
             direction,
         }
     }
-    pub fn new_zeroes() -> Ray {
-        Ray {
-            origin: Point3::new_zeroes(),
-            direction: Vec3::new_zeroes(),
-        }
-    }
     pub fn direction(&self) -> Vec3 {
         self.direction
     }
