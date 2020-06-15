@@ -1,6 +1,11 @@
 use core::fmt;
+use std::f32::consts::PI;
 use std::fmt::{Display, Formatter};
 use std::ops::{Add, Div, Mul, Neg, Sub};
+
+use rand::Rng;
+
+use crate::math::{random_f32, random_in_range_f32};
 
 pub type Point3 = Vec3;
 pub type Color = Vec3;
@@ -47,6 +52,51 @@ impl Vec3 {
     }
     pub fn unit_vector(vec3: Vec3) -> Vec3 {
         vec3 / vec3.length()
+    }
+    pub fn random_unit_vector() -> Vec3 {
+        let mut rnd = rand::thread_rng();
+        let a = random_in_range_f32(rnd, 0.0, 2.0 * PI);
+        let z = random_in_range_f32(rnd, -1.0, 1.0);
+        let r = (1.0 - z * z).sqrt();
+        Vec3 {
+            e: [r * a.cos(), r * a.sin(), z]
+        }
+    }
+    pub fn random() -> Vec3 {
+        let mut rnd = rand::thread_rng();
+        Vec3 {
+            e: [
+                random_f32(rnd),
+                random_f32(rnd),
+                random_f32(rnd)
+            ]
+        }
+    }
+    pub fn random_in_range(min: f32, max: f32) -> Vec3 {
+        let mut rnd = rand::thread_rng();
+        Vec3 {
+            e: [
+                random_in_range_f32(rnd, min, max),
+                random_in_range_f32(rnd, min, max),
+                random_in_range_f32(rnd, min, max)
+            ]
+        }
+    }
+    pub fn random_in_unit_sphere() -> Vec3 {
+        loop {
+            let p = Vec3::random_in_range(-1.0, 1.0);
+            if p.length_square() >= 1.0 {
+                continue;
+            }
+            return p;
+        }
+    }
+    pub fn random_in_hemisphere(normal: Vec3) -> Vec3 {
+        let rnd_in_unit_sphere = Vec3::random_in_unit_sphere();
+        if rnd_in_unit_sphere.dot(normal) > 0.0 {
+            return rnd_in_unit_sphere;
+        }
+        return -rnd_in_unit_sphere;
     }
 }
 
