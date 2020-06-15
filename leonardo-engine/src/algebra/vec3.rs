@@ -3,9 +3,7 @@ use std::f32::consts::PI;
 use std::fmt::{Display, Formatter};
 use std::ops::{Add, Div, Mul, Neg, Sub};
 
-use rand::Rng;
-
-use crate::math::{random_f32, random_in_range_f32};
+use crate::algebra::utility::{random_f32, random_in_range_f32};
 
 pub type Point3 = Vec3;
 pub type Color = Vec3;
@@ -54,7 +52,7 @@ impl Vec3 {
         vec3 / vec3.length()
     }
     pub fn random_unit_vector() -> Vec3 {
-        let mut rnd = rand::thread_rng();
+        let rnd = rand::thread_rng();
         let a = random_in_range_f32(rnd, 0.0, 2.0 * PI);
         let z = random_in_range_f32(rnd, -1.0, 1.0);
         let r = (1.0 - z * z).sqrt();
@@ -63,7 +61,7 @@ impl Vec3 {
         }
     }
     pub fn random() -> Vec3 {
-        let mut rnd = rand::thread_rng();
+        let rnd = rand::thread_rng();
         Vec3 {
             e: [
                 random_f32(rnd),
@@ -73,7 +71,7 @@ impl Vec3 {
         }
     }
     pub fn random_in_range(min: f32, max: f32) -> Vec3 {
-        let mut rnd = rand::thread_rng();
+        let rnd = rand::thread_rng();
         Vec3 {
             e: [
                 random_in_range_f32(rnd, min, max),
@@ -163,16 +161,5 @@ impl Div<f32> for Vec3 {
 impl Display for Vec3 {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "[{}, {}, {}]", self.x(), self.y(), self.z())
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_div() {
-        let vec = Vec3::new(2.0, 2.0, 2.0);
-        println!("{}", vec / 2.0);
     }
 }

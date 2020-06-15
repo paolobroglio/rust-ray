@@ -1,7 +1,5 @@
-use std::borrow::{Borrow, BorrowMut};
-
-use crate::ray::Ray;
-use crate::vec3::{Point3, Vec3};
+use crate::algebra::vec3::{Point3, Vec3};
+use crate::graphics::ray::Ray;
 
 pub struct HittableStore {
     store: Vec<Box<dyn Hittable>>
@@ -25,12 +23,10 @@ impl Hittable for HittableStore {
     fn hit(&self, ray: Ray, t_min: f32, t_max: f32, _hit_record: &HitRecord) -> Option<HitRecord> {
         let mut temp_rec = HitRecord::new_def();
         let mut hit_anything = false;
-        let mut closest_so_far = t_max;
         for item in self.store.iter() {
             match item.hit(ray, t_min, t_max, &temp_rec) {
                 Some(new_hit_record) => {
                     hit_anything = true;
-                    closest_so_far = new_hit_record.t;
                     temp_rec = new_hit_record;
                 }
                 _ => continue

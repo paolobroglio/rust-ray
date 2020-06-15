@@ -1,24 +1,13 @@
 use std::fs::File;
 use std::io::Write;
 
-use rand::Rng;
-use rand::rngs::ThreadRng;
-
-use crate::camera::Camera;
-use crate::hit::{HitRecord, Hittable, HittableStore};
-use crate::math::random_f32;
-use crate::ppm::write_color;
-use crate::ray::Ray;
-use crate::sphere::Sphere;
-use crate::vec3::{Color, Point3, Vec3};
-
-mod ray;
-mod ppm;
-mod vec3;
-mod hit;
-mod sphere;
-mod camera;
-mod math;
+use leonardo_engine::algebra::utility::random_f32;
+use leonardo_engine::algebra::vec3::{Color, Point3, Vec3};
+use leonardo_engine::graphics::hit::{HitRecord, HittableStore, Hittable};
+use leonardo_engine::graphics::ray::Ray;
+use leonardo_engine::graphics::camera::Camera;
+use leonardo_engine::graphics::sphere::Sphere;
+use leonardo_engine::graphics::ppm::write_color;
 
 fn ray_color(ray: Ray, world: &HittableStore, depth: i32) -> Color {
     let hit_record = HitRecord::new_def();
@@ -60,12 +49,12 @@ fn main() -> std::io::Result<()> {
 
     let camera = Camera::new();
 
-    let mut rnd_generator = rand::thread_rng();
+    let rnd_generator = rand::thread_rng();
 
     for j in (0..image_height).rev() {
         for i in 0..image_width {
             let mut pixel_color = Color::new(0.0, 0.0, 0.0);
-            for s in 0..samples_per_pixel {
+            for _s in 0..samples_per_pixel {
                 let u = (i as f32 + random_f32(rnd_generator)) / (image_width - 1) as f32;
                 let v = (j as f32 + random_f32(rnd_generator)) / (image_height - 1) as f32;
                 let r = camera.get_ray(u, v);

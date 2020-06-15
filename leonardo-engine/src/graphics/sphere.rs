@@ -1,6 +1,6 @@
-use crate::hit::{HitRecord, Hittable};
-use crate::ray::Ray;
-use crate::vec3::Point3;
+use crate::algebra::vec3::Point3;
+use crate::graphics::hit::{HitRecord, Hittable};
+use crate::graphics::ray::Ray;
 
 #[derive(Debug, Copy, Clone)]
 pub struct Sphere {
@@ -32,7 +32,7 @@ fn get_new_record(ray: Ray, center: Point3, radius: f32, temp: f32) -> Option<Hi
 }
 
 impl Hittable for Sphere {
-    fn hit(&self, ray: Ray, t_min: f32, t_max: f32, hit_record: &HitRecord) -> Option<HitRecord> {
+    fn hit(&self, ray: Ray, t_min: f32, t_max: f32, _hit_record: &HitRecord) -> Option<HitRecord> {
         let oc = ray.origin() - self.center;
         let a = ray.direction().length_square();
         let half_b = oc.dot(ray.direction());

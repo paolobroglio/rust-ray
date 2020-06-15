@@ -1,4 +1,4 @@
-use crate::vec3::Color;
+use crate::algebra::vec3::Color;
 
 fn clamp(x: f32, min: f32, max: f32) -> f32 {
     if x < min {
