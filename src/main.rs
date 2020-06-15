@@ -1,6 +1,9 @@
 use std::fs::File;
 use std::io::Write;
 
+use rand::Rng;
+use rand::rngs::ThreadRng;
+
 use crate::camera::Camera;
 use crate::hit::{HitRecord, Hittable, HittableStore};
 use crate::ppm::write_color;
@@ -15,6 +18,7 @@ mod hit;
 mod sphere;
 mod camera;
 
+
 fn ray_color(ray: Ray, world: &HittableStore) -> Color {
     let hit_record = HitRecord::new_def();
     return match world.hit(ray, 0.0, f32::MAX, &hit_record) {
@@ -27,8 +31,9 @@ fn ray_color(ray: Ray, world: &HittableStore) -> Color {
     };
 }
 
-fn random_f32() -> f32 {
-    rand::random::<f32>()
+fn random_f32(mut thread_rng: ThreadRng) -> f32 {
+    let rnd: f32 = thread_rng.gen_range(0.000, 1.000);
+    return rnd;
 }
 
 
@@ -47,16 +52,18 @@ fn main() -> std::io::Result<()> {
 
     let camera = Camera::new();
 
-    for j in 0..image_height {
+    let mut rnd_generator = rand::thread_rng();
+
+    for j in (0..image_height).rev() {
         for i in 0..image_width {
             let mut pixel_color = Color::new(0.0, 0.0, 0.0);
             for s in 0..samples_per_pixel {
-                let u = (i as f32 + random_f32()) / (image_width - 1) as f32;
-                let v = (image_height - 1 - j) as f32 + random_f32() / (image_height - 1) as f32;
+                let u = (i as f32 + rnd_generator.gen::<f32>()) / (image_width - 1) as f32;
+                let v = (j as f32 + rnd_generator.gen::<f32>()) / (image_height - 1) as f32;
                 let r = camera.get_ray(u, v);
                 pixel_color = pixel_color + ray_color(r, &world);
             }
-            content.push_str(write_color(pixel_color, samples_per_pixel).as_str());
+            content.push_str(write_color(pixel_color, samples_per_pixel as f32).as_str());
         }
     }
 
