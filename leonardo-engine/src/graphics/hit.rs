@@ -1,5 +1,7 @@
 use crate::algebra::vec3::{Point3, Vec3};
+use crate::graphics::material::Material;
 use crate::graphics::ray::Ray;
+use std::rc::Rc;
 
 pub struct HittableStore {
     store: Vec<Box<dyn Hittable>>
@@ -39,12 +41,13 @@ impl Hittable for HittableStore {
     }
 }
 
-#[derive(Debug)]
+
 pub struct HitRecord {
     pub point: Point3,
     pub normal: Vec3,
     pub t: f32,
     pub front_face: bool,
+    pub material: Option<Rc<dyn Material>>,
 }
 
 impl HitRecord {
@@ -54,14 +57,16 @@ impl HitRecord {
             Vec3::new(0.0, 0.0, 0.0),
             0.0,
             false,
+            Option::None,
         )
     }
-    pub fn new(point: Point3, normal: Vec3, t: f32, front_face: bool) -> HitRecord {
+    pub fn new(point: Point3, normal: Vec3, t: f32, front_face: bool, material: Option<Rc<dyn Material>>) -> HitRecord {
         HitRecord {
             point,
             normal,
             t,
             front_face,
+            material,
         }
     }
     pub fn with_normal(hit_record: HitRecord, ray: Ray, outward_normal: Vec3) -> HitRecord {
@@ -71,6 +76,7 @@ impl HitRecord {
             normal: if front_face { outward_normal } else { -outward_normal },
             t: hit_record.t,
             front_face,
+            material: hit_record.material,
         }
     }
 }

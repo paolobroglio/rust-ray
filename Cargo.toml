@@ -9,3 +9,4 @@ edition = "2018"
 [dependencies]
 rand = "0.7.3"
 leonardo-engine = { path="leonardo-engine", version="0.1.0" }
+indicatif = "0.15.0"
